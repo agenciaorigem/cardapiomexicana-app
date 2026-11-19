@@ -4,22 +4,41 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#10451e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mexicana">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="description" content="Explore as categorias do cardápio da Lanchonete Mexicana.">
 <title>Cardápio | Lanchonete Mexicana</title>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon-192.png">
-<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <link rel="stylesheet" href="./style.css">
 <script src="./menu.js" defer></script>
 <script src="./app.js" defer></script>
 </head>
 <body class="home-view">
+<div id="splash-screen" class="splash-screen" aria-hidden="true">
+  <div class="splash-box">
+    <img src="./logo-lanchonete-mexicana.png" alt="Lanchonete Mexicana" class="splash-logo">
+  </div>
+</div>
 <header class="top"><div class="bar">
 <a class="brand" href="#" aria-label="Lanchonete Mexicana, início do cardápio"><img src="./logo-lanchonete-mexicana.png" alt="Lanchonete Mexicana · Burritos, tacos, pastéis e sucos"></a>
 <button id="install" type="button">Instalar app <span aria-hidden="true">↓</span></button>
 </div></header>
 <main>
-<section id="home" aria-labelledby="title">
+<section id="maintenance" class="maintenance-screen">
+  <img src="./logo-lanchonete-mexicana.png" alt="Lanchonete Mexicana" class="maintenance-logo">
+  <div class="maintenance-icon" aria-hidden="true">⏳</div>
+  <h1 class="maintenance-title">Estamos em manutenção / fechados no momento</h1>
+  <p class="maintenance-subtitle">Voltamos em breve!</p>
+  <div class="maintenance-contact">
+    <a href="tel:+553535311155" class="maintenance-btn">Ligue para o Delivery: (35) 3531-1155</a>
+    <p class="maintenance-address">Parque da Lagoinha, 12 – Lagoinha<br>São Sebastião do Paraíso – MG</p>
+  </div>
+</section>
+<section id="home" aria-labelledby="title" style="display: none;">
 <div class="hero">
 <h1 id="title"><img src="./titulo-cardapio.png" alt="Cardápio Comida Mexicana" width="1080" height="399"></h1>
 </div>

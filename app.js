@@ -105,6 +105,12 @@ function renderProducts(groups, slug) {
 }
 
 function renderCategory() {
+  const maintenance = byId('maintenance');
+  if (maintenance && !maintenance.hidden && maintenance.style.display !== 'none') {
+    byId('home').hidden = true;
+    byId('detail').hidden = true;
+    return;
+  }
   const slug = location.hash.slice(1);
   const category = categories.find(([id]) => id === slug);
   document.body.classList.toggle('home-view', !category);
@@ -156,4 +162,19 @@ installButton.addEventListener('click', async () => {
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(console.error);
+}
+
+const splash = byId('splash-screen');
+if (splash) {
+  const hideSplash = () => {
+    splash.classList.add('fade-out');
+    setTimeout(() => { if (splash.parentNode) splash.remove(); }, 450);
+  };
+  if (document.readyState === 'complete') {
+    setTimeout(hideSplash, 650);
+  } else {
+    window.addEventListener('load', () => setTimeout(hideSplash, 650));
+    // Fallback guarantee in case load event already fired
+    setTimeout(hideSplash, 1200);
+  }
 }
