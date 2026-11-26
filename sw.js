@@ -1,16 +1,23 @@
-const cacheName = 'mexicana-cardapio-v8';
+const cacheName = 'mexicana-cardapio-v11';
 const assets = [
-  './', './index.html', './app.js', './menu.js', './style.css', './manifest.webmanifest',
-  './grafismo-verde.webp', './titulo-cardapio.png', './logo-lanchonete-mexicana.png',
-  './icon-192.png', './icon-512.png', './splash-512.png', './apple-touch-icon.png',
+  './', './index.html', './app.js', './pedido.js', './carrinho.js', './menu.js', './style.css', './manifest.webmanifest',
+  './grafismo-verde.webp', './titulo-cardapio.png', './logo-lanchonete-mexicana.png', './icone-mexicana-192.png', './icone-mexicana-512.png',
   './fotos/burrito.webp',
   './fotos/caldos.webp',
+  './fotos/cervejas.webp',
+  './fotos/churritos.webp',
   './fotos/combinados.webp',
+  './fotos/drinks.webp',
   './fotos/escondidinho.webp',
+  './fotos/gran-burrito.webp',
+  './fotos/gran-gateau.webp',
   './fotos/pastel-doce.webp',
   './fotos/pastel-salgado.webp',
+  './fotos/pratos-especiais.webp',
+  './fotos/quesadillas-doces.webp',
+  './fotos/refrigerantes-agua.webp',
   './fotos/salada.webp',
-  './fotos/sobremesas.webp',
+  './fotos/sucos.webp',
   './fotos/tacos.webp',
 ];
 

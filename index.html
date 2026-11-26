@@ -11,10 +11,12 @@
 <meta name="description" content="Explore as categorias do cardápio da Lanchonete Mexicana.">
 <title>Cardápio | Lanchonete Mexicana</title>
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="./icon-192.png">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="icon" href="./icone-mexicana-192.png">
+<link rel="apple-touch-icon" href="./icone-mexicana-192.png">
 <link rel="stylesheet" href="./style.css">
 <script src="./menu.js" defer></script>
+<script src="./carrinho.js" defer></script>
+<script src="./pedido.js" defer></script>
 <script src="./app.js" defer></script>
 </head>
 <body class="home-view">
@@ -28,17 +30,7 @@
 <button id="install" type="button">Instalar app <span aria-hidden="true">↓</span></button>
 </div></header>
 <main>
-<section id="maintenance" class="maintenance-screen">
-  <img src="./logo-lanchonete-mexicana.png" alt="Lanchonete Mexicana" class="maintenance-logo">
-  <div class="maintenance-icon" aria-hidden="true">⏳</div>
-  <h1 class="maintenance-title">Estamos em manutenção / fechados no momento</h1>
-  <p class="maintenance-subtitle">Voltamos em breve!</p>
-  <div class="maintenance-contact">
-    <a href="tel:+553535311155" class="maintenance-btn">Ligue para o Delivery: (35) 3531-1155</a>
-    <p class="maintenance-address">Parque da Lagoinha, 12 – Lagoinha<br>São Sebastião do Paraíso – MG</p>
-  </div>
-</section>
-<section id="home" aria-labelledby="title" style="display: none;">
+<section id="home" aria-labelledby="title">
 <div class="hero">
 <h1 id="title"><img src="./titulo-cardapio.png" alt="Cardápio Comida Mexicana" width="1080" height="399"></h1>
 </div>
@@ -58,6 +50,18 @@
 <div id="products"></div>
 </section>
 </main>
+<div class="cart-bar" id="cart-bar" hidden><button class="action" id="view-order" type="button">Ver pedido</button></div>
+<div id="cart-feedback" class="sr-only" role="status"></div>
+<dialog id="cart-dialog" aria-labelledby="cart-title">
+<h2 id="cart-title">Seu pedido</h2>
+<div id="cart-items"></div>
+<p id="cart-total"></p>
+<div class="cart-actions">
+<button class="action" id="close-cart" type="button">Voltar ao cardápio</button>
+<a class="action" id="checkout" target="_blank" rel="noopener noreferrer">Finalizar pedido</a>
+</div>
+<p id="checkout-help">O WhatsApp abre com o pedido preenchido. Toque em Enviar para confirmar.</p>
+</dialog>
 <dialog id="install-dialog" aria-labelledby="install-title">
 <form method="dialog"><button class="close" aria-label="Fechar">×</button></form>
 <h2 id="install-title">Instalar o cardápio</h2>

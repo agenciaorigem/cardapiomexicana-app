@@ -12,21 +12,6 @@ const categories = [
   ['sobremesas', 'Sobremesas'],
 ];
 
-const tacos = [
-  ['Chili com Carne (Picante)', 'Chili com carne, mussarela, barbecue, alface, tomate e cebola crispy.'],
-  ['Taco Clássico de Carne', 'Carne moída, bacon, mussarela, barbecue, alface, tomate e cebola crispy.'],
-  ['Taco Clássico de Frango', 'Frango grelhado, bacon, mussarela, barbecue, alface, tomate e cebola crispy.'],
-  ['Taco de Filé', 'Contra filé grelhado em tiras, calabresa, mussarela, barbecue, alface, tomate e cebola crispy.'],
-  ['Brócolis com Bacon', 'Brócolis, bacon, mussarela, barbecue, alface, tomate e cebola crispy.'],
-  ['Taco de Frango com Milho', 'Catupiry, frango desfiado, milho, mussarela, barbecue, alface, tomate e cebola crispy.'],
-  ['Taco de Pernil', 'Catupiry, pernil desfiado, azeitonas verdes, mussarela, barbecue, alface, tomate e cebola crispy.'],
-  ['Taco de Queijo', 'Catupiry, cheddar, mussarela, bacon, milho, palmito, barbecue, alface, tomate e cebola crispy.'],
-  ['Taco X-Tudo', 'Frango grelhado em tiras, carne moída, bacon, calabresa, mussarela, barbecue, alface, tomate e cebola crispy.'],
-  ['Moda Chef', 'Frango chili, bacon, calabresa, catupiry, cheddar, mussarela, pimenta defumada, barbecue, alface, tomate e cebola crispy.'],
-];
-
-menu['tacos-individuais'] = [{ alphabetical: true, items: tacos }];
-
 const byId = (id) => document.getElementById(id);
 const categoryNav = byId('categories');
 for (const [slug, label] of categories) {
@@ -43,24 +28,21 @@ for (const [slug, label] of categories) {
 
 const alphabet = new Intl.Collator('pt-BR');
 const products = byId('products');
+const currency = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
 const categoryPhotos = {
   'tacos-individuais': ['tacos', 'Tacos crocantes servidos no prato'],
   'burritos-individuais': ['burrito', 'Burrito individual com recheio à mostra'],
+  'gran-burritos': ['gran-burrito', 'Gran burrito gratinado com queijo'],
   combinados: ['combinados', 'Bandeja com tacos, porções e molhos'],
-  pasteis: [
-    ['pastel-doce', 'Pastel doce com sorvete e calda de chocolate'],
-    ['pastel-salgado', 'Pastel salgado aberto com recheio à mostra'],
-  ],
   'monte-sua-salada': ['salada', 'Salada com legumes, folhas e carnes'],
   'escondidinho-da-frida': ['escondidinho', 'Escondidinho gratinado'],
   caldos: ['caldos', 'Caldo servido com torradas'],
-  sobremesas: ['sobremesas', 'Gran Gateau com frutas, sorvete e calda de chocolate'],
 };
 
 function renderProducts(groups, slug) {
   products.replaceChildren();
-  for (const [index, { title, note, alphabetical, items }] of groups.entries()) {
+  for (const [index, { title, note, alphabetical, items, photo: groupPhoto, builder }] of groups.entries()) {
     const group = document.createElement('section');
     group.className = 'menu-group';
     if (title) {
@@ -68,8 +50,7 @@ function renderProducts(groups, slug) {
       heading.textContent = title;
       group.append(heading);
     }
-    const photo = slug === 'pasteis' ? categoryPhotos.pasteis[index] :
-      index === 0 ? categoryPhotos[slug] : undefined;
+    const photo = groupPhoto ?? (index === 0 ? categoryPhotos[slug] : undefined);
     if (photo) {
       const [name, alt] = photo;
       const image = document.createElement('img');
@@ -82,21 +63,54 @@ function renderProducts(groups, slug) {
     if (note) {
       const paragraph = document.createElement('p');
       paragraph.textContent = note;
+      if (slug === 'combinados') paragraph.className = 'combo-note';
       group.append(paragraph);
+    }
+    if (builder) {
+      group.append(renderBuilder(builder));
+      products.append(group);
+      continue;
     }
     const grid = document.createElement('div');
     grid.className = 'products';
     const ordered = alphabetical ? [...items].sort(([a], [b]) => alphabet.compare(a, b)) : items;
-    for (const [name, ingredients] of ordered) {
+    for (const [name, ingredients, priceInCents] of ordered) {
       const article = document.createElement('article');
+      const choose = document.createElement('button');
+      choose.type = 'button';
+      choose.className = 'choose-product';
+      choose.textContent = 'Selecionar';
+      choose.setAttribute('aria-label', 'Selecionar ' + name);
+      choose.setAttribute('aria-expanded', 'false');
+      const add = document.createElement('button');
+      add.type = 'button';
+      add.className = 'action';
+      add.textContent = 'Adicionar ao pedido';
+      add.hidden = true;
+      choose.addEventListener('click', () => {
+        add.hidden = !add.hidden;
+        choose.setAttribute('aria-expanded', String(!add.hidden));
+      });
+      add.addEventListener('click', () => {
+        addToCart({ name, category: title ? categories.find(([id]) => id === slug)[1] + ' / ' + title :
+          categories.find(([id]) => id === slug)[1], price: priceInCents, details: [] });
+        add.textContent = 'Adicionar mais um';
+      });
       const heading = document.createElement(title ? 'h3' : 'h2');
       heading.textContent = name;
-      article.append(heading);
+      const header = document.createElement('div');
+      header.className = 'product-heading';
+      const price = document.createElement('span');
+      price.className = 'product-price';
+      price.textContent = currency.format(priceInCents / 100);
+      header.append(heading, price);
+      article.append(header);
       if (ingredients) {
         const description = document.createElement('p');
         description.textContent = ingredients;
         article.append(description);
       }
+      article.append(choose, add);
       grid.append(article);
     }
     group.append(grid);
@@ -105,12 +119,6 @@ function renderProducts(groups, slug) {
 }
 
 function renderCategory() {
-  const maintenance = byId('maintenance');
-  if (maintenance && !maintenance.hidden && maintenance.style.display !== 'none') {
-    byId('home').hidden = true;
-    byId('detail').hidden = true;
-    return;
-  }
   const slug = location.hash.slice(1);
   const category = categories.find(([id]) => id === slug);
   document.body.classList.toggle('home-view', !category);
@@ -123,6 +131,7 @@ function renderCategory() {
   }
   window.scrollTo(0, 0);
 }
+initCart();
 window.addEventListener('hashchange', renderCategory);
 renderCategory();
 
@@ -174,7 +183,6 @@ if (splash) {
     setTimeout(hideSplash, 650);
   } else {
     window.addEventListener('load', () => setTimeout(hideSplash, 650));
-    // Fallback guarantee in case load event already fired
     setTimeout(hideSplash, 1200);
   }
 }
