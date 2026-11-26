@@ -1,7 +1,7 @@
-const cacheName = 'mexicana-cardapio-v11';
+const cacheName = 'mexicana-cardapio-v12';
 const assets = [
-  './', './index.html', './app.js', './pedido.js', './carrinho.js', './menu.js', './style.css', './manifest.webmanifest',
-  './grafismo-verde.webp', './titulo-cardapio.png', './logo-lanchonete-mexicana.png', './icone-mexicana-192.png', './icone-mexicana-512.png',
+  './', './index.html', './app.js', './pedido.js', './carrinho.js', './menu.js', './style.css', './manifest.webmanifest?v=2',
+  './grafismo-verde.webp', './titulo-cardapio.png', './logo-lanchonete-mexicana.png', './icone-mexicana-192.png?v=2', './icone-mexicana-512.png?v=2', './apple-touch-icon.png?v=2',
   './fotos/burrito.webp',
   './fotos/caldos.webp',
   './fotos/cervejas.webp',
